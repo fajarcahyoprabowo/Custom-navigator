@@ -17,17 +17,15 @@ class CustomScaffold extends StatefulWidget {
   ///
   /// The stateful widget handles your page navigation by default,
   /// so no need to keep track of the index
-  final Function(int) onItemTap;
+  final Function(int)? onItemTap;
 
   CustomScaffold(
       // Can't be constant because of assertions :(
-      {Key key,
-      this.scaffold,
-      this.children,
+      {Key? key,
+      required this.scaffold,
+      required this.children,
       this.onItemTap})
-      : assert(scaffold != null),
-        assert(children != null),
-        assert(scaffold.bottomNavigationBar != null),
+      : assert(scaffold.bottomNavigationBar != null),
         assert(scaffold.bottomNavigationBar is BottomNavigationBar,
             '[CustomScaffold] require an instance of [BottomNavigationBar]'),
         assert(
@@ -83,15 +81,16 @@ class _CustomScaffoldState extends State<CustomScaffold> {
   _bottomNavBar() {
     assert(widget.scaffold.bottomNavigationBar != null);
 
-    BottomNavigationBar b = widget.scaffold.bottomNavigationBar;
+    BottomNavigationBar b =
+        widget.scaffold.bottomNavigationBar as BottomNavigationBar;
     return BottomNavigationBar(
       key: b.key,
       items: b.items,
       currentIndex: _index,
       onTap: (index) {
         setState(() => _index = index);
-        _key.currentState.maybePop();
-        widget.onItemTap(index);
+        _key.currentState!.maybePop();
+        widget.onItemTap!(index);
       },
       backgroundColor: b.backgroundColor,
       elevation: b.elevation,
